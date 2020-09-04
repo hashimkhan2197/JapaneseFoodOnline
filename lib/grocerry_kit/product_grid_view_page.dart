@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:japfooduser/grocerry_kit/sub_pages/cartPage.dart';
 import 'package:japfooduser/providers/collection_names.dart';
 import 'package:japfooduser/providers/product.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,9 @@ class ProductGridView extends StatefulWidget {
 class _ProductGridViewState extends State<ProductGridView> {
   bool _prefloading = false;
   String currentUserId ;
+  double _subtotal = 0;
+  int _cartItemCount = 0;
+
   @override
   void initState() {
     Future.delayed(Duration.zero).then((_) async{
@@ -79,9 +83,86 @@ class _ProductGridViewState extends State<ProductGridView> {
 //              ))
         ],
       ),
-      body: _prefloading == true?Center(child: CircularProgressIndicator()):Container(
-        margin: EdgeInsets.symmetric(vertical: 16),
-        child: categoryItems(),
+      body: _prefloading == true?Center(child: CircularProgressIndicator()):Stack(
+        children:[ Container(
+          margin: EdgeInsets.only(top: 16,bottom: 45),
+          child: categoryItems(),
+        ),
+          StreamBuilder(
+              stream: Firestore.instance
+                  .collection(users_collection)
+                  .document(currentUserId)
+                  .collection('cart')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center();
+                }
+                final snapShotData = snapshot.data.documents;
+                if (snapShotData.length > 0) {
+                  _subtotal = 0;
+                  _cartItemCount = 0;
+                  snapShotData.forEach((element) {
+                    _cartItemCount += element.data['quantity'];
+                    _subtotal +=
+                        element.data['price'] * element.data['quantity'];
+                  });
+                }
+                return Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    height: 45,
+                    color: Theme.of(context).accentColor,
+                    alignment: Alignment.center,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                              return CartPage();
+                            }));
+                      },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Container(
+                            alignment: Alignment.center,
+                            width: 50,
+                            height: 35,
+                            margin: EdgeInsets.symmetric(horizontal: 10),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).buttonColor,
+                                border: Border.all(
+                                    color: Colors.black54, width: 1),
+                                borderRadius: BorderRadius.circular(4)),
+                            child: Text(
+                              '$_cartItemCount',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 22, color: Colors.white),
+                            ),
+                          ),
+                          Text(
+                            '£$_subtotal',
+                            style: TextStyle(
+                                fontSize: 22, color: Colors.white),
+                          ),
+                          Expanded(
+                            child: Text(
+                              'View Basket\t',
+                              softWrap: true,
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                  fontSize: 22, color: Colors.white),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              })
+        ]
+
       ),
     );
   }
@@ -120,7 +201,7 @@ class _ProductGridViewState extends State<ProductGridView> {
                   ProductModel product =
                       Provider.of<Product>(context).convertToProductModel(data);
                   return Container(
-                    height: 130,
+                    height: 150,
                     width: MediaQuery.of(context).size.width,
                     padding:
                         EdgeInsets.only(left: 30, top: 4, bottom: 4, right: 20),

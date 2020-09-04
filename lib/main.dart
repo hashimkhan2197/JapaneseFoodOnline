@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
 
         debugShowCheckedModeBanner: false,
-        title: '',
+        title: 'Japanese Food Online',
         theme: ThemeData(
           primaryColor: Colors.black,
           buttonColor: Colors.black87,

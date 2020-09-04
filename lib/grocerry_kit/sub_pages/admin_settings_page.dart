@@ -185,7 +185,7 @@ class _CouponDeliveryPageState extends State<CouponDeliveryPage> {
             Container(
               margin: EdgeInsets.only(top: 16, bottom: 16),
               decoration: BoxDecoration(
-                color: Theme.of(context).buttonColor,
+                color: Theme.of(context).accentColor,
                 shape: BoxShape.rectangle,
                 borderRadius:
                 BorderRadius.all(Radius.circular(8)),

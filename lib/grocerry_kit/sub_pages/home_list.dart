@@ -110,7 +110,7 @@ class _HomeListState extends State<HomeList> {
 
   Widget categoryItems(categoryDocid) {
     return Container(
-      height: 380,
+      height: 400,
       margin: EdgeInsets.only(top: 8),
       //padding: const EdgeInsets.symmetric(horizontal: 20),
       child: StreamBuilder(
@@ -153,14 +153,14 @@ class _HomeListState extends State<HomeList> {
       String title, String description, String url, String productPrice) {
     print(MediaQuery.of(context).size.width * 0.65);
     return Container(
-      width: 275,
+      width: 295,
       margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
 //      padding: EdgeInsets.only(left: 22),
       child: Column(
         children: <Widget>[
           Container(
             width: 275,
-            height: 180,
+            height: 200,
             decoration: BoxDecoration(
               color: Colors.grey[300],
               border: Border.all(color: Colors.grey),
@@ -225,37 +225,72 @@ class _HomeListState extends State<HomeList> {
                               color: Theme.of(context).primaryColor),
                         ),
                         GestureDetector(
-                          onTap: () {
+                          onTap: () async{
                             double price = double.parse(productPrice);
-                            Firestore.instance
-                                .collection(users_collection)
-                                .document(currentUserId)
-                                .collection('cart')
-                                .add({
-                              'price': price,
-                              'image': url,
-                              'name': title,
-                              'quantity': 1,
-                              'subtotal': price
-                            }).then((value) {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                  "Item added to cart",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                backgroundColor: Theme.of(context).accentColor,
-                                duration: Duration(milliseconds: 1000),
-                              ));
-                            }).catchError((e) {
-                              Scaffold.of(context).showSnackBar(SnackBar(
-                                content: Text(
-                                  "Error. Please Check your internet connection.",
-                                  style: TextStyle(fontSize: 18),
-                                ),
-                                backgroundColor: Theme.of(context).errorColor,
-                                duration: Duration(milliseconds: 1000),
-                              ));
-                            });
+                            QuerySnapshot cartdocs = await Firestore.instance.collection(users_collection)
+                            .document(currentUserId).collection('cart')
+                            .where('name',isEqualTo: title)
+                            .getDocuments();
+                            if(cartdocs.documents.length>0){
+                              Firestore.instance
+                                  .collection(users_collection)
+                                  .document(currentUserId)
+                                  .collection('cart').document(cartdocs.documents[0].documentID)
+                                  .updateData({
+                                'quantity': cartdocs.documents[0]['quantity']+1
+                              }).then((value) {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                    "Item added to cart",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  backgroundColor: Theme.of(context).accentColor,
+                                  duration: Duration(milliseconds: 1000),
+                                ));
+                              }).catchError((e) {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                    "Error. Please Check your internet connection.",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  backgroundColor: Theme.of(context).errorColor,
+                                  duration: Duration(milliseconds: 1000),
+                                ));
+                              });
+                            }
+                            else{
+                              Firestore.instance
+                                  .collection(users_collection)
+                                  .document(currentUserId)
+                                  .collection('cart')
+                                  .add({
+                                'price': price,
+                                'image': url,
+                                'name': title,
+                                'quantity': 1,
+                                'subtotal': price
+                              }).then((value) {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                    "Item added to cart",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  backgroundColor: Theme.of(context).accentColor,
+                                  duration: Duration(milliseconds: 1000),
+                                ));
+                              }).catchError((e) {
+                                Scaffold.of(context).showSnackBar(SnackBar(
+                                  content: Text(
+                                    "Error. Please Check your internet connection.",
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                  backgroundColor: Theme.of(context).errorColor,
+                                  duration: Duration(milliseconds: 1000),
+                                ));
+                              });
+                            }
+
+
                           },
                           child: Container(
                               decoration: BoxDecoration(

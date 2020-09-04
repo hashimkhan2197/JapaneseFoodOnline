@@ -41,6 +41,7 @@ dependencies:
 #  flutter_facebook_login: ^3.0.0
 #  flutter_login_facebook: ^0.2.1
   flutter_signin_button: ^1.0.0
+  carousel_slider: ^2.2.1
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -82,6 +83,10 @@ flutter:
     - images/logo.jpg
     - images/splash.png
     - images/japsignin.jpg
+    - images/hello1.jpg
+    - images/hello2.jpg
+    - images/hello3.jpg
+    - images/loyalty.jpeg
   fonts:
     - family: CartIcons
       fonts:

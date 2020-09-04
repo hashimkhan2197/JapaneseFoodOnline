@@ -39,7 +39,7 @@ class _OrderHistoryState extends State<OrderHistory> {
       appBar:AppBar(
         centerTitle: true,
         brightness: Brightness.dark,
-        elevation: 0,backgroundColor: Theme.of(context).primaryColor,
+        elevation: 0,backgroundColor: Theme.of(context).buttonColor,
         automaticallyImplyLeading: true,
         title: Text(
           "Order History",

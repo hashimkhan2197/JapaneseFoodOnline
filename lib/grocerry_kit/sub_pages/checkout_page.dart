@@ -82,7 +82,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
         centerTitle: true,
         brightness: Brightness.dark,
         elevation: 0,
-        backgroundColor: Colors.red,
+        backgroundColor: Theme.of(context).buttonColor,
         leading: GestureDetector(
           onTap: () {
             Navigator.pop(context);
@@ -598,7 +598,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 : Container(
               margin: EdgeInsets.only(top: 16, bottom: 16),
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: Theme.of(context).accentColor,
                 shape: BoxShape.rectangle,
                 borderRadius: BorderRadius.all(Radius.circular(8)),
               ),

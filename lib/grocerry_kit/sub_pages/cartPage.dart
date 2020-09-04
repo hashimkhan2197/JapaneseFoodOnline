@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:japfooduser/grocerry_kit/sub_pages/loyalty.dart';
 import 'package:japfooduser/providers/collection_names.dart';
 import 'package:japfooduser/providers/user.dart';
 import 'package:japfooduser/widgets/custom_image_picker.dart';
@@ -67,7 +68,7 @@ class _CartPageState extends State<CartPage> {
           backgroundColor: Theme.of(context).buttonColor,
 //        backgroundColor: Hexcolor('#0644e3'),
 
-          title: Text('\t\tFood Basket',
+          title: Text('\tReview Basket',
               style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -120,11 +121,11 @@ class _CartPageState extends State<CartPage> {
                           element.data['price'] * element.data['quantity'];
                     });
 
-                    if (_subtotal < 100) {
+                    if (_subtotal < 0.001) {
                       _deliveryCharges = 0;
-                    } else if (_subtotal < 200) {
-                      _deliveryCharges = 0;
-                    } else if (_subtotal > 200) {
+                    } else if (_subtotal < 12) {
+                      _deliveryCharges = 2;
+                    } else{
                       _deliveryCharges = 0;
                     }
 
@@ -181,6 +182,30 @@ class _CartPageState extends State<CartPage> {
                           color: Colors.black87,
                           thickness: 1.5,
                         ),
+
+                        Container(
+                            margin: EdgeInsets.only(
+                                left: 20, right: 20, top: 4, bottom: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "Delivery Charges",
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                Text(
+                                  "£" + _deliveryCharges.toStringAsFixed(2),
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).primaryColor),
+                                ),
+                              ],
+                            )),
+
+                        SizedBox(height: 6,),
                         Container(
                             margin: EdgeInsets.only(
                                 left: 20, right: 20, top: 4, bottom: 4),
@@ -194,7 +219,7 @@ class _CartPageState extends State<CartPage> {
                                       fontWeight: FontWeight.w700),
                                 ),
                                 Text(
-                                  "£" + _subtotal.toStringAsFixed(2),
+                                  "£" + _total.toStringAsFixed(2),
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
@@ -315,7 +340,11 @@ class _CartPageState extends State<CartPage> {
                               ),
 
                               FlatButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context){
+                                    return Loyalty();
+                                  }));
+                                },
                                 child: Text(
                                   "VIEW",
                                   style: TextStyle(color: Theme.of(context).accentColor,fontSize: 18,fontWeight: FontWeight.w400),
@@ -384,7 +413,7 @@ class _CartPageState extends State<CartPage> {
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(8),
           color: Colors.white70),
-      height: 107,
+      height: 120,
       child: Row(children: <Widget>[
         Container(
           alignment: Alignment.centerLeft,
