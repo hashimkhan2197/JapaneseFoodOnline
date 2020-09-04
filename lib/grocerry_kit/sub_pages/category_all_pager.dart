@@ -6,6 +6,9 @@ import 'package:japfooduser/grocerry_kit/category_grid_view_Page.dart';
 import 'package:japfooduser/grocerry_kit/sub_pages/home_list.dart';
 
 class CategoryPager extends StatefulWidget {
+  final String currentUserId ;
+  CategoryPager(this.currentUserId);
+
   @override
   _CategoryPagerState createState() => _CategoryPagerState();
 }
@@ -80,7 +83,7 @@ class _CategoryPagerState extends State<CategoryPager> {
           ),
         ),
       ),
-      body: _all==true? HomeList(): CategoryGridView(),
+      body: _all==true? HomeList(widget.currentUserId): CategoryGridView(),
     );
 
   }

@@ -51,14 +51,13 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.7.5
+  flutter_launcher_icons: "^0.7.3"
 
 flutter_icons:
-  android: true
+  android: "launcher_icon"
   ios: true
   image_path: "images/logo.jpg"
-  adaptive_icon_background: #fc7337"
-  adaptive_icon_foreground: "images/logo.jpg"
+
 
 
 # For information on the generic Dart part of this file, see the

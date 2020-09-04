@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
+import 'package:japfooduser/grocerry_kit/sub_pages/cartPage.dart';
 import 'package:japfooduser/providers/collection_names.dart';
 
 import '../SignIn.dart';
@@ -15,29 +16,31 @@ class CouponDeliveryPage extends StatefulWidget {
 
 class _CouponDeliveryPageState extends State<CouponDeliveryPage> {
 
-  final _formKey = GlobalKey<FormState>();
-//  final _formKey1 = GlobalKey<FormState>();
-  String _couponCode = '';
-  String _discPercentage = '';
-  TextEditingController _first = TextEditingController();
-  TextEditingController _second = TextEditingController();
-  TextEditingController _third = TextEditingController();
-  TextEditingController _helpEmailController = TextEditingController();
-  TextEditingController _helpNumberController = TextEditingController();
-//  File _categoryImageFile;
-//  void _pickedImage(File image) {
-//    _categoryImageFile = image;
+//  final _formKey = GlobalKey<FormState>();
+////  final _formKey1 = GlobalKey<FormState>();
+//  String _couponCode = '';
+//  String _discPercentage = '';
+//  TextEditingController _first = TextEditingController();
+//  TextEditingController _second = TextEditingController();
+//  TextEditingController _third = TextEditingController();
+//  TextEditingController _helpEmailController = TextEditingController();
+//  TextEditingController _helpNumberController = TextEditingController();
+////  File _categoryImageFile;
+////  void _pickedImage(File image) {
+////    _categoryImageFile = image;
+////  }
+//
+//  @override
+//  void dispose() {
+//    _helpEmailController.dispose();
+//    _helpNumberController.dispose();
+//    _first.dispose();
+//    _second.dispose();
+//    _third.dispose();
+//    super.dispose();
 //  }
 
-  @override
-  void dispose() {
-    _helpEmailController.dispose();
-    _helpNumberController.dispose();
-    _first.dispose();
-    _second.dispose();
-    _third.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -54,32 +57,15 @@ class _CouponDeliveryPageState extends State<CouponDeliveryPage> {
           style: TextStyle(
               color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
         ),
-//        actions: <Widget>[
-//          GestureDetector(
-//              onTap: () {
-//                FirebaseAuth.instance.signOut();
-////                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context){
-////                  return SignInPage();
-////                }),(Route<dynamic> route) => false);
-//              },
-//              child: Row(
-//                children: <Widget>[
-//                  Padding(
-//                    padding: const EdgeInsets.only(right: 8.0),
-//                    child: Text("Logout",style:TextStyle(color:Colors.white)),
-//                  )
-//                ],
-//              ))
-//        ],
       ),
 
       body: Center(
         child: Container(height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[SizedBox(height: 20,),
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[SizedBox(height: 20,),
 //              Container(
 //                margin: EdgeInsets.only(
 //                  left: 20, right: 20, ),
@@ -182,26 +168,26 @@ class _CouponDeliveryPageState extends State<CouponDeliveryPage> {
 //                ),
 //              ),
 //              SizedBox(height: 80,),
-            Container(
-              margin: EdgeInsets.only(top: 16, bottom: 16),
-              decoration: BoxDecoration(
-                color: Theme.of(context).accentColor,
-                shape: BoxShape.rectangle,
-                borderRadius:
-                BorderRadius.all(Radius.circular(8)),
+              Container(
+                margin: EdgeInsets.only(top: 16, bottom: 16),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).accentColor,
+                  shape: BoxShape.rectangle,
+                  borderRadius:
+                  BorderRadius.all(Radius.circular(8)),
+                ),
+                width: 250,
+                child: FlatButton(
+                  child: Text('Logout',
+                      style: TextStyle(
+                          fontSize: 20, color: Colors.white)),
+                  onPressed: () {
+                    FirebaseAuth.instance.signOut();
+                  },
+                ),
               ),
-              width: 250,
-              child: FlatButton(
-                child: Text('Logout',
-                    style: TextStyle(
-                        fontSize: 20, color: Colors.white)),
-                onPressed: () {
-                  FirebaseAuth.instance.signOut();
-                },
-              ),
-            ),
-          ],
-        ),),
+            ],
+          ),),
       ),
     );
   }

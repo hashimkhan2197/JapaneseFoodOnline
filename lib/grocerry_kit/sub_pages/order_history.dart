@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:japfooduser/grocerry_kit/sub_pages/cartPage.dart';
+import 'package:japfooduser/providers/collection_names.dart';
 import 'package:japfooduser/providers/user.dart';
 import 'package:provider/provider.dart';
 import 'order_Page.dart';
@@ -8,29 +10,16 @@ import 'order_Page.dart';
 class OrderHistory extends StatefulWidget {
   static const routeName = "/orderHistory";
 
+  final String currentUserId ;
+  OrderHistory(this.currentUserId);
+
+
   @override
   _OrderHistoryState createState() => _OrderHistoryState();
 }
 
 class _OrderHistoryState extends State<OrderHistory> {
 
-  bool _prefloading = false;
-  String currentUserId;
-
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((_) async {
-      setState(() {
-        _prefloading = true;
-      });
-      FirebaseUser authResult = await FirebaseAuth.instance.currentUser();
-      setState(() {
-        currentUserId = authResult.uid;
-        _prefloading = false;
-      });
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +55,8 @@ class _OrderHistoryState extends State<OrderHistory> {
               child: StreamBuilder(
                   stream: Firestore.instance
                       .collection('orders')
-                  .where('userUid',isEqualTo: currentUserId)
-                  .orderBy('dateTime',descending: true)
+                      .where('userUid',isEqualTo: widget.currentUserId)
+                      .orderBy('dateTime',descending: true)
                       .snapshots(),
                   builder: (context, snapshot) {
                     switch (snapshot.connectionState) {
@@ -82,8 +71,8 @@ class _OrderHistoryState extends State<OrderHistory> {
                               onTap: () {
                                 Navigator.push(context,
                                     MaterialPageRoute(builder: (context) {
-                                  return OrderPage(data);
-                                }));
+                                      return OrderPage(data);
+                                    }));
                               },
                               child: Container(margin: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                                 padding:
@@ -94,26 +83,26 @@ class _OrderHistoryState extends State<OrderHistory> {
                                     borderRadius: BorderRadius.circular(8),
                                     color: Colors.white70),
                                 child: ListTile(
-                                    title: Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding: EdgeInsets.only(left: 8, top: 4 ,bottom: 4),
-                                      child: Text(
-                                        "Date: " +
-                                            data['dateTime'].split('T').first,
-                                        style: TextStyle(
-                                          fontSize: 23,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                  title: Container(
+                                    alignment: Alignment.centerLeft,
+                                    padding: EdgeInsets.only(left: 8, top: 4 ,bottom: 4),
+                                    child: Text(
+                                      "Date: " +
+                                          data['dateTime'].split('T').first,
+                                      style: TextStyle(
+                                        fontSize: 23,
+                                        fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    subtitle: Text(
-                                        '${data['status']}',
-                                        style: TextStyle(
+                                  ),
+                                  subtitle: Text(
+                                      '${data['status']}',
+                                      style: TextStyle(
                                           fontSize: 16,
                                           color: Colors.red,
                                           fontWeight: FontWeight.w500
-                                        )),
-                                //    trailing: Text(data['status'])
+                                      )),
+                                  //    trailing: Text(data['status'])
                                 ),
                               ),
                             );

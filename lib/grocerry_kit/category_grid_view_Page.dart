@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:japfooduser/grocerry_kit/product_grid_view_page.dart';
+import 'package:japfooduser/grocerry_kit/sub_pages/cartPage.dart';
 import 'package:japfooduser/providers/category.dart';
 import 'package:japfooduser/providers/collection_names.dart';
 import 'package:provider/provider.dart';
@@ -13,42 +15,15 @@ class CategoryGridView extends StatefulWidget {
 }
 
 class _CategoryGridViewState extends State<CategoryGridView> {
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-//      appBar: AppBar(
-////        centerTitle: true,
-//        brightness: Brightness.dark,
-//        elevation: 0,
-//        automaticallyImplyLeading: true,
-//        backgroundColor: Theme.of(context).accentColor,
-////        backgroundColor: Hexcolor('#0644e3'),
-//
-//        title: Text('All Categories',
-//            style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.w500)),
-//        actions: <Widget>[
-////          GestureDetector(
-////              onTap: () {
-////                Navigator.push(context, MaterialPageRoute(builder: (context) {
-////                  return AddCategoryPage();
-////                }));
-////              },
-////              child: Row(
-////                children: <Widget>[
-////                  Padding(
-////                    padding: const EdgeInsets.only(right: 8.0),
-////                    child: Text("Add Category",
-////                        style: TextStyle(color: Colors.white)),
-////                  )
-////                ],
-////              ))
-//        ],
-//      ),
       body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8,vertical: 20),
-        child: categoryItems(),
-      ),
+            margin: EdgeInsets.symmetric(horizontal: 8,vertical: 20),
+            child: categoryItems(),
+          ),
     );
   }
 

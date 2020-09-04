@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:japfooduser/grocerry_kit/category_products_package/add_product.dart';
+import 'package:japfooduser/grocerry_kit/sub_pages/cartPage.dart';
 import 'package:japfooduser/providers/category.dart';
 import 'package:japfooduser/providers/collection_names.dart';
 import 'package:japfooduser/providers/product.dart';
@@ -14,43 +15,26 @@ import '../category_grid_view_Page.dart';
 import '../product_grid_view_page.dart';
 
 class HomeList extends StatefulWidget {
+  final String currentUserId;
+  HomeList(this.currentUserId);
   @override
   _HomeListState createState() => _HomeListState();
 }
 
 class _HomeListState extends State<HomeList> {
-  bool _prefloading = false;
-  String currentUserId;
-
-  @override
-  void initState() {
-    Future.delayed(Duration.zero).then((_) async {
-      setState(() {
-        _prefloading = true;
-      });
-      FirebaseUser authResult = await FirebaseAuth.instance.currentUser();
-      setState(() {
-        currentUserId = authResult.uid;
-        _prefloading = false;
-      });
-    });
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _prefloading == true
-          ? Center(child: CircularProgressIndicator())
-          : Container(
+      body: Container(
+            margin: EdgeInsets.only(bottom: 40),
 //              color: const Color(0xffF4F7FA),
-              child: ListView(
-                children: <Widget>[
+            child: ListView(
+              children: <Widget>[
 //            _buildCategoryList(),
-                  _buildCategoryList2()
-                ],
-              ),
+                _buildCategoryList2()
+              ],
             ),
+          ),
     );
   }
 
@@ -61,7 +45,7 @@ class _HomeListState extends State<HomeList> {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
+              return Center(child: CircularProgressIndicator(),);
               break;
             default:
               return snapshot.data.documents.length == 0
@@ -228,13 +212,13 @@ class _HomeListState extends State<HomeList> {
                           onTap: () async{
                             double price = double.parse(productPrice);
                             QuerySnapshot cartdocs = await Firestore.instance.collection(users_collection)
-                            .document(currentUserId).collection('cart')
+                            .document(widget.currentUserId).collection('cart')
                             .where('name',isEqualTo: title)
                             .getDocuments();
                             if(cartdocs.documents.length>0){
                               Firestore.instance
                                   .collection(users_collection)
-                                  .document(currentUserId)
+                                  .document(widget.currentUserId)
                                   .collection('cart').document(cartdocs.documents[0].documentID)
                                   .updateData({
                                 'quantity': cartdocs.documents[0]['quantity']+1
@@ -261,7 +245,7 @@ class _HomeListState extends State<HomeList> {
                             else{
                               Firestore.instance
                                   .collection(users_collection)
-                                  .document(currentUserId)
+                                  .document(widget.currentUserId)
                                   .collection('cart')
                                   .add({
                                 'price': price,

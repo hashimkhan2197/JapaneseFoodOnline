@@ -44,8 +44,8 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  int _index = 0;
-  final controller = PageController(initialPage: 0, keepPage: true);
+  int _index = 1;
+  final controller = PageController(initialPage: 1, keepPage: true);
 
   void pageChanged(int index) {
     setState(() {
@@ -55,9 +55,11 @@ class _HomePageState extends State<HomePage> {
 
   void bottomTapped(int index) {
     setState(() {
-      _index = index;
       controller.animateToPage(index,
-          duration: Duration(milliseconds: 500), curve: Curves.ease);
+          duration: Duration(milliseconds: 100), curve: Curves.ease
+      );
+      _index = index;
+
     });
   }
 
@@ -66,9 +68,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       //appBar: _buildAppBar(),
       bottomNavigationBar: _buildBottomNavigationBar(),
-      body: _prefloading == true
-          ? Center()
-          : Stack(
+
+      body: _prefloading==true?Center(child: CircularProgressIndicator(),):Stack(
               children: [
                 PageView(
                   controller: controller,
@@ -77,11 +78,12 @@ class _HomePageState extends State<HomePage> {
                   },
                   children: <Widget>[
                     Hello(),
-                    CategoryPager(),
-                    OrderHistory(),
+                    CategoryPager(currentUserId),
+                    OrderHistory(currentUserId),
                     CouponDeliveryPage()
                   ],
                 ),
+                if(_index!=0)
                 StreamBuilder(
                     stream: Firestore.instance
                         .collection(users_collection)
@@ -102,8 +104,11 @@ class _HomePageState extends State<HomePage> {
                               element.data['price'] * element.data['quantity'];
                         });
                       }
-                      return _index==0?Container():
-                      Align(
+//                      setState(() {
+//                        _prefloading = false;
+//                      });
+
+                      return Align(
                         alignment: Alignment.bottomCenter,
                         child: Container(
                           height: 45,
