@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
   void bottomTapped(int index) {
     setState(() {
       controller.animateToPage(index,
-          duration: Duration(milliseconds: 100), curve: Curves.ease
+          duration: Duration(milliseconds: 50), curve: Curves.ease
       );
       _index = index;
 
@@ -142,7 +142,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 Text(
-                                  '£$_subtotal',
+                                  '£'+_subtotal.toStringAsFixed(2),
                                   style: TextStyle(
                                       fontSize: 22, color: Colors.white),
                                 ),
