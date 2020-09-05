@@ -137,10 +137,11 @@ class _HomeListState extends State<HomeList> {
       String title, String description, String url, String productPrice) {
     print(MediaQuery.of(context).size.width * 0.65);
     return Container(
-      width: 295,
-      margin: EdgeInsets.symmetric(vertical: 12.0, horizontal: 12),
+      width: 275,
+      margin: EdgeInsets.symmetric(vertical: 6.0, horizontal: 12),
 //      padding: EdgeInsets.only(left: 22),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Container(
             width: 275,
@@ -160,7 +161,7 @@ class _HomeListState extends State<HomeList> {
           ),
           Container(
               width: 275,
-              height: 175,
+              height: 185,
               padding: EdgeInsets.all(25.0),
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -178,24 +179,24 @@ class _HomeListState extends State<HomeList> {
                       title,
                       softWrap: true,
                       style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 21,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor),
                     ),
                     SizedBox(
-                      height: 6,
+                      height: 2,
                     ),
                     Text(
                       description,
                       maxLines: 2,
                       softWrap: true,
                       style: TextStyle(
-                        fontSize: 17,
+                        fontSize: 16,
                         color: Colors.black54,
                       ),
                     ),
                     SizedBox(
-                      height: 17,
+                      height: 8,
                     ),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -283,7 +284,7 @@ class _HomeListState extends State<HomeList> {
 //                                      RoundedRectangleBorder(
 //                                          borderRadius: BorderRadius.circular(30.0)),
                               alignment: Alignment.center,
-                              height: 32,
+                              height: 30,
                               width: 65,
                               child: Text(
                                 'BUY',
